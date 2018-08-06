@@ -10,6 +10,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 import PropTypes from 'prop-types';
 import React from 'react';
+import dndDetails from 'dnd-details';
 var FileDrop = /** @class */ (function (_super) {
     __extends(FileDrop, _super);
     function FileDrop(props) {
@@ -23,9 +24,6 @@ var FileDrop = /** @class */ (function (_super) {
             event.preventDefault();
         };
         _this.handleFrameDrag = function (event) {
-            // Only allow dragging of files
-            if (!FileDrop.eventHasFiles(event))
-                return;
             // We are listening for events on the 'frame', so every time the user drags over any element in the frame's tree,
             // the event bubbles up to the frame. By keeping count of how many "dragenters" we get, we can tell if they are still
             // "draggingOverFrame" (b/c you get one "dragenter" initially, and one "dragenter"/one "dragleave" for every bubble)
@@ -52,13 +50,11 @@ var FileDrop = /** @class */ (function (_super) {
             }
         };
         _this.handleDragOver = function (event) {
-            if (FileDrop.eventHasFiles(event)) {
-                _this.setState({ draggingOverTarget: true });
-                if (!FileDrop.isIE())
-                    event.dataTransfer.dropEffect = _this.props.dropEffect;
-                if (_this.props.onDragOver)
-                    _this.props.onDragOver(event);
-            }
+            _this.setState({ draggingOverTarget: true });
+            if (!FileDrop.isIE())
+                event.dataTransfer.dropEffect = _this.props.dropEffect;
+            if (_this.props.onDragOver)
+                _this.props.onDragOver(event);
         };
         _this.handleDragLeave = function (event) {
             _this.setState({ draggingOverTarget: false });
@@ -66,9 +62,16 @@ var FileDrop = /** @class */ (function (_super) {
                 _this.props.onDragLeave(event);
         };
         _this.handleDrop = function (event) {
-            if (_this.props.onDrop && FileDrop.eventHasFiles(event)) {
-                var files = (event.dataTransfer) ? event.dataTransfer.files : null;
-                _this.props.onDrop(files, event);
+            if (_this.props.onDrop) {
+                var files = event.dataTransfer && event.dataTransfer.files || null;
+                var details = void 0;
+                try {
+                    details = dndDetails(event);
+                }
+                catch (error) {
+                    console.warn('Failed to retrieve details', error);
+                }
+                _this.props.onDrop(files, event, details);
             }
             _this.resetDragging();
         };
@@ -122,7 +125,7 @@ var FileDrop = /** @class */ (function (_super) {
         dropEffect: 'copy',
         frame: window ? window.document : undefined,
         outerComponent: 'div',
-        innerComponent: 'div',
+        innerComponent: 'div'
     };
     FileDrop.propTypes = {
         outerComponent: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
@@ -145,6 +148,10 @@ var FileDrop = /** @class */ (function (_super) {
         onFrameDrop: PropTypes.func
     };
     FileDrop.isIE = function () { return ((window && ((window.navigator.userAgent.indexOf('MSIE') !== -1) || (window.navigator.appVersion.indexOf('Trident/') > 0)))); };
+    // not used since not restricted to files
+    // @author loopmode
+    // @deprecated
+    // @since 0.4.0
     FileDrop.eventHasFiles = function (event) {
         // In most browsers this is an array, but in IE11 it's an Object :(
         var hasFiles = false;

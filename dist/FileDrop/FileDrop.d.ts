@@ -2,6 +2,13 @@
 import PropTypes from 'prop-types';
 import React, { DragEvent as ReactDragEvent, DragEventHandler as ReactDragEventHandler } from 'react';
 export declare type TDropEffects = 'copy' | 'move' | 'link' | 'none';
+export interface IDropDetails {
+    files: FileList;
+    links: string[];
+    images: string[];
+    text: string;
+    html: string;
+}
 export interface IFileDropProps {
     className?: string;
     frame?: HTMLElement | Document;
@@ -10,7 +17,7 @@ export interface IFileDropProps {
     onFrameDrop?: (event: DragEvent) => void;
     onDragOver?: ReactDragEventHandler<HTMLDivElement>;
     onDragLeave?: ReactDragEventHandler<HTMLDivElement>;
-    onDrop?: (files: FileList, event: ReactDragEvent<HTMLDivElement>) => any;
+    onDrop?: (files: FileList, event: ReactDragEvent<HTMLDivElement>, link: IDropDetails) => any;
     dropEffect?: TDropEffects;
     outerComponent?: any;
     innerComponent?: any;
