@@ -1,7 +1,7 @@
 import React, { DragEvent as ReactDragEvent, DragEventHandler as ReactDragEventHandler } from 'react';
 import ReactDOM from 'react-dom';
 
-import FileDrop from 'src/FileDrop/FileDrop';
+import FileDrop, { IDropDetails } from 'src/FileDrop/FileDrop';
 import SvgExample from './SvgExample';
 
 import './Demo.css';
@@ -27,8 +27,8 @@ class Demo extends React.Component {
   //   console.log('handleDragLeave', event);
   // }
 
-  handleDrop = (files:FileList, event:ReactDragEvent<HTMLDivElement>) => {
-    console.log('handleDrop!', files, event);
+  handleDrop = (files:FileList, event:ReactDragEvent<HTMLDivElement>, details: IDropDetails) => {
+    console.log('handleDrop!', event, details);
   }
 
   render() {
