@@ -1,7 +1,10 @@
 {
   "name": "@loopmode/react-file-drop",
   "author": "https://sarink.net",
-  "version": "0.4.0",
+  "contributors": [
+    "Jovica Aleksic <jovica.aleksic@loopmode.de>"
+  ],
+  "version": "0.4.1",
   "description": "React component for Gmail or Facbook -like drag and drop file uploader. Drag files anywhere onto the window to highlight a 'drop area' of the page",
   "main": "dist/FileDrop/FileDrop.js",
   "types": "dist/FileDrop/FileDrop.d.ts",
@@ -35,13 +38,13 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sarink/react-file-drop.git"
+    "url": "https://github.com/loopmode/react-file-drop.git"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/sarink/react-file-drop/issues"
+    "url": "https://github.com/loopmode/react-file-drop/issues"
   },
-  "homepage": "https://github.com/sarink/react-file-drop#readme",
+  "homepage": "https://github.com/loopmode/react-file-drop#readme",
   "dependencies": {
     "dnd-details": "^1.0.6",
     "prop-types": "^15.6.1"

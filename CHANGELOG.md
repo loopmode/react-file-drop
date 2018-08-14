@@ -1,5 +1,15 @@
 # react-file-drop changelog
 
+### v0.4.1
+* Add disabled prop
+
+### v0.4.0
+* Accept not just files, but any drops.
+* Provide third argument `details` to `onDrop` callback
+
+### v0.3.0
+* Add `innerComponent` and `outerComponent` render props
+
 ### v0.2.0
 * Rewrite in Typescript
 * Add React 16 support

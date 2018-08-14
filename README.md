@@ -5,7 +5,8 @@ React component for Gmail or Facebook -like drag and drop file uploader. Drag fi
 ## fork: @loopmode/react-file-drop
 
 This is a fork of the original [react-file-drop](https://www.npmjs.com/package/react-file-drop) library. It adds support for custom render function for wrappers, and enables it to be used in SVG context.  
-It will become obsolete once [this pull request](https://github.com/sarink/react-file-drop/pull/33) is merged.
+
+Furthermore, it accepts any kind of dropped content (not just files) and provides a third argument `details` to the `onDrop` callback.
 
 ## V2 is out! See the [changelog](https://github.com/sarink/react-file-drop/blob/master/CHANGELOG.md) before upgrading
 
@@ -49,9 +50,14 @@ Lastly, you'll need to style it. Check out the Styling section below for details
 
 ## Props
 
+##### disabled - Boolean
+
+If true, any drag/drop is ignored. No callbacks will be invoked.
+
 ##### onDrop - function(files, event)
 
 Callback when the user drops files onto the target
+_Fork info: the third argument, details, has the signature `{files:Array<String>, links:Array<String>, images:Array<String>, text:String, html:String}`_
 
 ##### onDragOver - function(event)
 

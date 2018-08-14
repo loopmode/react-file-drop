@@ -22,6 +22,7 @@ export interface IFileDropProps {
   onDragLeave?: ReactDragEventHandler<HTMLDivElement>;
   onDrop?: (files:FileList, event:ReactDragEvent<HTMLDivElement>, link: IDropDetails) => any;
   dropEffect?: TDropEffects;
+  disabled?: boolean;
   outerComponent?: any;
   innerComponent?: any;
 }
@@ -56,7 +57,8 @@ class FileDrop extends React.PureComponent<IFileDropProps, IFileDropState> {
     },
     onFrameDragEnter: PropTypes.func,
     onFrameDragLeave: PropTypes.func,
-    onFrameDrop: PropTypes.func
+    onFrameDrop: PropTypes.func,
+    disabled: PropTypes.bool,
   };
 
   frameDragCounter: number;
@@ -99,6 +101,9 @@ class FileDrop extends React.PureComponent<IFileDropProps, IFileDropState> {
   }
 
   handleFrameDrag = (event:DragEvent) => {
+    if (this.props.disabled) {
+      return;
+    }
 
     // We are listening for events on the 'frame', so every time the user drags over any element in the frame's tree,
     // the event bubbles up to the frame. By keeping count of how many "dragenters" we get, we can tell if they are still
@@ -120,6 +125,9 @@ class FileDrop extends React.PureComponent<IFileDropProps, IFileDropState> {
   }
 
   handleFrameDrop = (event:DragEvent) => {
+    if (this.props.disabled) {
+      return;
+    }
     if (!this.state.draggingOverTarget) {
       this.resetDragging();
       if (this.props.onFrameDrop) this.props.onFrameDrop(event);
@@ -127,17 +135,26 @@ class FileDrop extends React.PureComponent<IFileDropProps, IFileDropState> {
   }
 
   handleDragOver:ReactDragEventHandler<HTMLDivElement> = (event) => {
+    if (this.props.disabled) {
+      return;
+    }
     this.setState({ draggingOverTarget: true });
     if (!FileDrop.isIE()) event.dataTransfer.dropEffect = this.props.dropEffect;
     if (this.props.onDragOver) this.props.onDragOver(event);
   }
 
   handleDragLeave:ReactDragEventHandler<HTMLDivElement> = (event) => {
+    if (this.props.disabled) {
+      return;
+    }
     this.setState({ draggingOverTarget: false });
     if (this.props.onDragLeave) this.props.onDragLeave(event);
   }
 
   handleDrop:ReactDragEventHandler<HTMLDivElement> = (event) => {
+    if (this.props.disabled) {
+      return;
+    }
     if (this.props.onDrop) {
       const files = event.dataTransfer && event.dataTransfer.files || null;
       let details:IDropDetails;
@@ -186,6 +203,7 @@ class FileDrop extends React.PureComponent<IFileDropProps, IFileDropState> {
   render() {
     let className = 'file-drop';
     if (this.props.className) className += ' ' + this.props.className;
+    if (this.props.disabled) className += ' disabled';
 
     let fileDropTargetClassName = 'file-drop-target';
     if (this.state.draggingOverFrame) fileDropTargetClassName += ' file-drop-dragging-over-frame';
