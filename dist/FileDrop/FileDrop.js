@@ -24,6 +24,9 @@ var FileDrop = /** @class */ (function (_super) {
             event.preventDefault();
         };
         _this.handleFrameDrag = function (event) {
+            if (_this.props.disabled) {
+                return;
+            }
             // We are listening for events on the 'frame', so every time the user drags over any element in the frame's tree,
             // the event bubbles up to the frame. By keeping count of how many "dragenters" we get, we can tell if they are still
             // "draggingOverFrame" (b/c you get one "dragenter" initially, and one "dragenter"/one "dragleave" for every bubble)
@@ -43,6 +46,9 @@ var FileDrop = /** @class */ (function (_super) {
             }
         };
         _this.handleFrameDrop = function (event) {
+            if (_this.props.disabled) {
+                return;
+            }
             if (!_this.state.draggingOverTarget) {
                 _this.resetDragging();
                 if (_this.props.onFrameDrop)
@@ -50,6 +56,9 @@ var FileDrop = /** @class */ (function (_super) {
             }
         };
         _this.handleDragOver = function (event) {
+            if (_this.props.disabled) {
+                return;
+            }
             _this.setState({ draggingOverTarget: true });
             if (!FileDrop.isIE())
                 event.dataTransfer.dropEffect = _this.props.dropEffect;
@@ -57,11 +66,17 @@ var FileDrop = /** @class */ (function (_super) {
                 _this.props.onDragOver(event);
         };
         _this.handleDragLeave = function (event) {
+            if (_this.props.disabled) {
+                return;
+            }
             _this.setState({ draggingOverTarget: false });
             if (_this.props.onDragLeave)
                 _this.props.onDragLeave(event);
         };
         _this.handleDrop = function (event) {
+            if (_this.props.disabled) {
+                return;
+            }
             if (_this.props.onDrop) {
                 var files = event.dataTransfer && event.dataTransfer.files || null;
                 var details = void 0;
@@ -111,6 +126,8 @@ var FileDrop = /** @class */ (function (_super) {
         var className = 'file-drop';
         if (this.props.className)
             className += ' ' + this.props.className;
+        if (this.props.disabled)
+            className += ' disabled';
         var fileDropTargetClassName = 'file-drop-target';
         if (this.state.draggingOverFrame)
             fileDropTargetClassName += ' file-drop-dragging-over-frame';
@@ -145,7 +162,8 @@ var FileDrop = /** @class */ (function (_super) {
         },
         onFrameDragEnter: PropTypes.func,
         onFrameDragLeave: PropTypes.func,
-        onFrameDrop: PropTypes.func
+        onFrameDrop: PropTypes.func,
+        disabled: PropTypes.bool,
     };
     FileDrop.isIE = function () { return ((window && ((window.navigator.userAgent.indexOf('MSIE') !== -1) || (window.navigator.appVersion.indexOf('Trident/') > 0)))); };
     // not used since not restricted to files

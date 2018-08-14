@@ -19,6 +19,7 @@ export interface IFileDropProps {
     onDragLeave?: ReactDragEventHandler<HTMLDivElement>;
     onDrop?: (files: FileList, event: ReactDragEvent<HTMLDivElement>, link: IDropDetails) => any;
     dropEffect?: TDropEffects;
+    disabled?: boolean;
     outerComponent?: any;
     innerComponent?: any;
 }
@@ -44,6 +45,7 @@ declare class FileDrop extends React.PureComponent<IFileDropProps, IFileDropStat
         onFrameDragEnter: PropTypes.Requireable<any>;
         onFrameDragLeave: PropTypes.Requireable<any>;
         onFrameDrop: PropTypes.Requireable<any>;
+        disabled: PropTypes.Requireable<any>;
     };
     frameDragCounter: number;
     constructor(props: IFileDropProps);
