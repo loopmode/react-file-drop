@@ -102,6 +102,7 @@ class FileDrop extends React.PureComponent<IFileDropProps, IFileDropState> {
 
   handleFrameDrag = (event:DragEvent) => {
     if (this.props.disabled) {
+      event.preventDefault();
       return;
     }
 
@@ -126,6 +127,7 @@ class FileDrop extends React.PureComponent<IFileDropProps, IFileDropState> {
 
   handleFrameDrop = (event:DragEvent) => {
     if (this.props.disabled) {
+      event.preventDefault();
       return;
     }
     if (!this.state.draggingOverTarget) {
@@ -136,6 +138,7 @@ class FileDrop extends React.PureComponent<IFileDropProps, IFileDropState> {
 
   handleDragOver:ReactDragEventHandler<HTMLDivElement> = (event) => {
     if (this.props.disabled) {
+      event.preventDefault();
       return;
     }
     this.setState({ draggingOverTarget: true });
@@ -145,6 +148,7 @@ class FileDrop extends React.PureComponent<IFileDropProps, IFileDropState> {
 
   handleDragLeave:ReactDragEventHandler<HTMLDivElement> = (event) => {
     if (this.props.disabled) {
+      event.preventDefault();
       return;
     }
     this.setState({ draggingOverTarget: false });
@@ -153,6 +157,7 @@ class FileDrop extends React.PureComponent<IFileDropProps, IFileDropState> {
 
   handleDrop:ReactDragEventHandler<HTMLDivElement> = (event) => {
     if (this.props.disabled) {
+      event.preventDefault();
       return;
     }
     if (this.props.onDrop) {

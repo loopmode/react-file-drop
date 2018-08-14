@@ -25,6 +25,7 @@ var FileDrop = /** @class */ (function (_super) {
         };
         _this.handleFrameDrag = function (event) {
             if (_this.props.disabled) {
+                event.preventDefault();
                 return;
             }
             // We are listening for events on the 'frame', so every time the user drags over any element in the frame's tree,
@@ -47,6 +48,7 @@ var FileDrop = /** @class */ (function (_super) {
         };
         _this.handleFrameDrop = function (event) {
             if (_this.props.disabled) {
+                event.preventDefault();
                 return;
             }
             if (!_this.state.draggingOverTarget) {
@@ -57,6 +59,7 @@ var FileDrop = /** @class */ (function (_super) {
         };
         _this.handleDragOver = function (event) {
             if (_this.props.disabled) {
+                event.preventDefault();
                 return;
             }
             _this.setState({ draggingOverTarget: true });
@@ -67,6 +70,7 @@ var FileDrop = /** @class */ (function (_super) {
         };
         _this.handleDragLeave = function (event) {
             if (_this.props.disabled) {
+                event.preventDefault();
                 return;
             }
             _this.setState({ draggingOverTarget: false });
@@ -75,6 +79,7 @@ var FileDrop = /** @class */ (function (_super) {
         };
         _this.handleDrop = function (event) {
             if (_this.props.disabled) {
+                event.preventDefault();
                 return;
             }
             if (_this.props.onDrop) {

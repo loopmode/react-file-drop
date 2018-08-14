@@ -1,5 +1,8 @@
 # react-file-drop changelog
 
+### v0.4.2
+* Prevent default events when disabled
+
 ### v0.4.1
 * Add disabled prop
 
