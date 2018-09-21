@@ -1,7 +1,6 @@
-/// <reference types="react" />
-import PropTypes from 'prop-types';
-import React, { DragEvent as ReactDragEvent, DragEventHandler as ReactDragEventHandler } from 'react';
-export declare type TDropEffects = 'copy' | 'move' | 'link' | 'none';
+import PropTypes from "prop-types";
+import React, { DragEvent as ReactDragEvent, DragEventHandler as ReactDragEventHandler } from "react";
+export declare type TDropEffects = "copy" | "move" | "link" | "none";
 export interface IDropDetails {
     files: FileList;
     links: string[];
@@ -35,17 +34,17 @@ declare class FileDrop extends React.PureComponent<IFileDropProps, IFileDropStat
         innerComponent: string;
     };
     static propTypes: {
-        outerComponent: PropTypes.Requireable<any>;
-        innerComponent: PropTypes.Requireable<any>;
-        onDragOver: PropTypes.Requireable<any>;
-        onDragLeave: PropTypes.Requireable<any>;
-        onDrop: PropTypes.Requireable<any>;
-        dropEffect: PropTypes.Requireable<any>;
+        outerComponent: PropTypes.Requireable<string | ((...args: any[]) => any)>;
+        innerComponent: PropTypes.Requireable<string | ((...args: any[]) => any)>;
+        onDragOver: PropTypes.Requireable<(...args: any[]) => any>;
+        onDragLeave: PropTypes.Requireable<(...args: any[]) => any>;
+        onDrop: PropTypes.Requireable<(...args: any[]) => any>;
+        dropEffect: PropTypes.Requireable<string>;
         frame: (props: any, propName: any, componentName: any) => Error;
-        onFrameDragEnter: PropTypes.Requireable<any>;
-        onFrameDragLeave: PropTypes.Requireable<any>;
-        onFrameDrop: PropTypes.Requireable<any>;
-        disabled: PropTypes.Requireable<any>;
+        onFrameDragEnter: PropTypes.Requireable<(...args: any[]) => any>;
+        onFrameDragLeave: PropTypes.Requireable<(...args: any[]) => any>;
+        onFrameDrop: PropTypes.Requireable<(...args: any[]) => any>;
+        disabled: PropTypes.Requireable<boolean>;
     };
     frameDragCounter: number;
     constructor(props: IFileDropProps);

@@ -1,30 +1,20 @@
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-import PropTypes from 'prop-types';
-import React from 'react';
-import dndDetails from 'dnd-details';
-var FileDrop = /** @class */ (function (_super) {
-    __extends(FileDrop, _super);
-    function FileDrop(props) {
-        var _this = _super.call(this, props) || this;
-        _this.resetDragging = function () {
-            _this.frameDragCounter = 0;
-            _this.setState({ draggingOverFrame: false, draggingOverTarget: false });
+import PropTypes from "prop-types";
+import React from "react";
+import dndDetails from "dnd-details";
+import Events from "@loopmode/events";
+class FileDrop extends React.PureComponent {
+    constructor(props) {
+        super(props);
+        this.resetDragging = () => {
+            this.frameDragCounter = 0;
+            this.setState({ draggingOverFrame: false, draggingOverTarget: false });
         };
-        _this.handleWindowDragOverOrDrop = function (event) {
+        this.handleWindowDragOverOrDrop = (event) => {
             // This prevents the browser from trying to load whatever file the user dropped on the window
             event.preventDefault();
         };
-        _this.handleFrameDrag = function (event) {
-            if (_this.props.disabled) {
+        this.handleFrameDrag = (event) => {
+            if (this.props.disabled) {
                 event.preventDefault();
                 return;
             }
@@ -32,161 +22,177 @@ var FileDrop = /** @class */ (function (_super) {
             // the event bubbles up to the frame. By keeping count of how many "dragenters" we get, we can tell if they are still
             // "draggingOverFrame" (b/c you get one "dragenter" initially, and one "dragenter"/one "dragleave" for every bubble)
             // This is far better than a "dragover" handler, which would be calling `setState` continuously.
-            _this.frameDragCounter += (event.type === 'dragenter' ? 1 : -1);
-            if (_this.frameDragCounter === 1) {
-                _this.setState({ draggingOverFrame: true });
-                if (_this.props.onFrameDragEnter)
-                    _this.props.onFrameDragEnter(event);
+            this.frameDragCounter += event.type === "dragenter" ? 1 : -1;
+            if (this.frameDragCounter === 1) {
+                this.setState({ draggingOverFrame: true });
+                if (this.props.onFrameDragEnter)
+                    this.props.onFrameDragEnter(event);
                 return;
             }
-            if (_this.frameDragCounter === 0) {
-                _this.setState({ draggingOverFrame: false });
-                if (_this.props.onFrameDragLeave)
-                    _this.props.onFrameDragLeave(event);
+            if (this.frameDragCounter === 0) {
+                this.setState({ draggingOverFrame: false });
+                if (this.props.onFrameDragLeave)
+                    this.props.onFrameDragLeave(event);
                 return;
             }
         };
-        _this.handleFrameDrop = function (event) {
-            if (_this.props.disabled) {
+        this.handleFrameDrop = (event) => {
+            if (this.props.disabled) {
                 event.preventDefault();
                 return;
             }
-            if (!_this.state.draggingOverTarget) {
-                _this.resetDragging();
-                if (_this.props.onFrameDrop)
-                    _this.props.onFrameDrop(event);
+            if (!this.state.draggingOverTarget) {
+                this.resetDragging();
+                if (this.props.onFrameDrop)
+                    this.props.onFrameDrop(event);
             }
         };
-        _this.handleDragOver = function (event) {
-            if (_this.props.disabled) {
+        this.handleDragOver = event => {
+            if (this.props.disabled) {
                 event.preventDefault();
                 return;
             }
-            _this.setState({ draggingOverTarget: true });
+            this.setState({ draggingOverTarget: true });
             if (!FileDrop.isIE())
-                event.dataTransfer.dropEffect = _this.props.dropEffect;
-            if (_this.props.onDragOver)
-                _this.props.onDragOver(event);
+                event.dataTransfer.dropEffect = this.props.dropEffect;
+            if (this.props.onDragOver)
+                this.props.onDragOver(event);
         };
-        _this.handleDragLeave = function (event) {
-            if (_this.props.disabled) {
+        this.handleDragLeave = event => {
+            if (this.props.disabled) {
                 event.preventDefault();
                 return;
             }
-            _this.setState({ draggingOverTarget: false });
-            if (_this.props.onDragLeave)
-                _this.props.onDragLeave(event);
+            this.setState({ draggingOverTarget: false });
+            if (this.props.onDragLeave)
+                this.props.onDragLeave(event);
         };
-        _this.handleDrop = function (event) {
-            if (_this.props.disabled) {
+        this.handleDrop = event => {
+            if (this.props.disabled) {
                 event.preventDefault();
                 return;
             }
-            if (_this.props.onDrop) {
-                var files = event.dataTransfer && event.dataTransfer.files || null;
-                var details = void 0;
+            if (this.props.onDrop) {
+                const files = (event.dataTransfer && event.dataTransfer.files) || null;
+                let details;
                 try {
                     details = dndDetails(event);
                 }
                 catch (error) {
-                    console.warn('Failed to retrieve details', error);
+                    console.warn("Failed to retrieve details", error);
                 }
-                _this.props.onDrop(files, event, details);
+                this.props.onDrop(files, event, details);
             }
-            _this.resetDragging();
+            this.resetDragging();
         };
-        _this.stopFrameListeners = function (frame) {
-            frame.removeEventListener('dragenter', _this.handleFrameDrag);
-            frame.removeEventListener('dragleave', _this.handleFrameDrag);
-            frame.removeEventListener('drop', _this.handleFrameDrop);
+        this.stopFrameListeners = (frame) => {
+            Events.removeEventListener("dragenter", this.handleFrameDrag, {
+                target: frame
+            });
+            Events.removeEventListener("dragleave", this.handleFrameDrag, {
+                target: frame
+            });
+            Events.removeEventListener("drop", this.handleFrameDrop, { target: frame });
         };
-        _this.startFrameListeners = function (frame) {
-            frame.addEventListener('dragenter', _this.handleFrameDrag);
-            frame.addEventListener('dragleave', _this.handleFrameDrag);
-            frame.addEventListener('drop', _this.handleFrameDrop);
+        this.startFrameListeners = (frame) => {
+            Events.addEventListener("dragenter", this.handleFrameDrag, {
+                target: frame
+            });
+            Events.addEventListener("dragleave", this.handleFrameDrag, {
+                target: frame
+            });
+            Events.addEventListener("drop", this.handleFrameDrop, { target: frame });
         };
-        _this.frameDragCounter = 0;
-        _this.state = { draggingOverFrame: false, draggingOverTarget: false };
-        return _this;
+        this.frameDragCounter = 0;
+        this.state = { draggingOverFrame: false, draggingOverTarget: false };
     }
-    FileDrop.prototype.componentWillReceiveProps = function (nextProps) {
+    componentWillReceiveProps(nextProps) {
         if (nextProps.frame !== this.props.frame) {
             this.resetDragging();
             this.stopFrameListeners(this.props.frame);
             this.startFrameListeners(nextProps.frame);
         }
-    };
-    FileDrop.prototype.componentDidMount = function () {
+    }
+    componentDidMount() {
         this.startFrameListeners(this.props.frame);
         this.resetDragging();
-        window.addEventListener('dragover', this.handleWindowDragOverOrDrop);
-        window.addEventListener('drop', this.handleWindowDragOverOrDrop);
-    };
-    FileDrop.prototype.componentWillUnmount = function () {
+        Events.addEventListener("dragover", this.handleWindowDragOverOrDrop);
+        Events.addEventListener("drop", this.handleWindowDragOverOrDrop);
+    }
+    componentWillUnmount() {
         this.stopFrameListeners(this.props.frame);
-        window.removeEventListener('dragover', this.handleWindowDragOverOrDrop);
-        window.removeEventListener('drop', this.handleWindowDragOverOrDrop);
-    };
-    FileDrop.prototype.render = function () {
-        var className = 'file-drop';
+        Events.removeEventListener("dragover", this.handleWindowDragOverOrDrop);
+        Events.removeEventListener("drop", this.handleWindowDragOverOrDrop);
+    }
+    render() {
+        let className = "file-drop";
         if (this.props.className)
-            className += ' ' + this.props.className;
+            className += " " + this.props.className;
         if (this.props.disabled)
-            className += ' disabled';
-        var fileDropTargetClassName = 'file-drop-target';
+            className += " disabled";
+        let fileDropTargetClassName = "file-drop-target";
         if (this.state.draggingOverFrame)
-            fileDropTargetClassName += ' file-drop-dragging-over-frame';
+            fileDropTargetClassName += " file-drop-dragging-over-frame";
         if (this.state.draggingOverTarget)
-            fileDropTargetClassName += ' file-drop-dragging-over-target';
-        var OuterComponent = this.props.outerComponent;
-        var InnerComponent = this.props.innerComponent;
+            fileDropTargetClassName += " file-drop-dragging-over-target";
+        const OuterComponent = this.props.outerComponent;
+        const InnerComponent = this.props.innerComponent;
         return (React.createElement(OuterComponent, { className: className, onDragOver: this.handleDragOver, onDragLeave: this.handleDragLeave, onDrop: this.handleDrop },
             React.createElement(InnerComponent, { className: fileDropTargetClassName }, this.props.children)));
-    };
-    FileDrop.defaultProps = {
-        dropEffect: 'copy',
-        frame: window ? window.document : undefined,
-        outerComponent: 'div',
-        innerComponent: 'div'
-    };
-    FileDrop.propTypes = {
-        outerComponent: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
-        innerComponent: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
-        onDragOver: PropTypes.func,
-        onDragLeave: PropTypes.func,
-        onDrop: PropTypes.func,
-        dropEffect: PropTypes.oneOf(["copy", "move", "link", "none"]),
-        frame: function (props, propName, componentName) {
-            var prop = props[propName];
-            if (prop == null) {
-                return new Error("Warning: Required prop `" + propName + "` was not specified in `" + componentName + "`");
-            }
-            if (prop !== document && prop !== window && !(prop instanceof HTMLElement)) {
-                return new Error("Warning: Prop `" + propName + "` must be one of the following: document, HTMLElement!");
-            }
-        },
-        onFrameDragEnter: PropTypes.func,
-        onFrameDragLeave: PropTypes.func,
-        onFrameDrop: PropTypes.func,
-        disabled: PropTypes.bool,
-    };
-    FileDrop.isIE = function () { return ((window && ((window.navigator.userAgent.indexOf('MSIE') !== -1) || (window.navigator.appVersion.indexOf('Trident/') > 0)))); };
-    // not used since not restricted to files
-    // @author loopmode
-    // @deprecated
-    // @since 0.4.0
-    FileDrop.eventHasFiles = function (event) {
-        // In most browsers this is an array, but in IE11 it's an Object :(
-        var hasFiles = false;
-        var types = event.dataTransfer.types;
-        for (var keyOrIndex in types) {
-            if (types[keyOrIndex] === 'Files') {
-                hasFiles = true;
-                break;
-            }
+    }
+}
+FileDrop.defaultProps = {
+    dropEffect: "copy",
+    frame: window ? window.document : undefined,
+    outerComponent: "div",
+    innerComponent: "div"
+};
+FileDrop.propTypes = {
+    outerComponent: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+    innerComponent: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+    onDragOver: PropTypes.func,
+    onDragLeave: PropTypes.func,
+    onDrop: PropTypes.func,
+    dropEffect: PropTypes.oneOf(["copy", "move", "link", "none"]),
+    frame: function (props, propName, componentName) {
+        const prop = props[propName];
+        if (prop == null) {
+            return new Error("Warning: Required prop `" +
+                propName +
+                "` was not specified in `" +
+                componentName +
+                "`");
         }
-        return hasFiles;
-    };
-    return FileDrop;
-}(React.PureComponent));
+        if (prop !== document &&
+            prop !== window &&
+            !(prop instanceof HTMLElement)) {
+            return new Error("Warning: Prop `" +
+                propName +
+                "` must be one of the following: document, HTMLElement!");
+        }
+    },
+    onFrameDragEnter: PropTypes.func,
+    onFrameDragLeave: PropTypes.func,
+    onFrameDrop: PropTypes.func,
+    disabled: PropTypes.bool
+};
+FileDrop.isIE = () => window &&
+    (window.navigator.userAgent.indexOf("MSIE") !== -1 ||
+        window.navigator.appVersion.indexOf("Trident/") > 0);
+// not used since not restricted to files
+// @author loopmode
+// @deprecated
+// @since 0.4.0
+FileDrop.eventHasFiles = (event) => {
+    // In most browsers this is an array, but in IE11 it's an Object :(
+    let hasFiles = false;
+    const types = event.dataTransfer.types;
+    for (const keyOrIndex in types) {
+        if (types[keyOrIndex] === "Files") {
+            hasFiles = true;
+            break;
+        }
+    }
+    return hasFiles;
+};
 export default FileDrop;

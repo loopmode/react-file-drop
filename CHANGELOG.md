@@ -1,5 +1,9 @@
 # react-file-drop changelog
 
+### v0.4.3
+
+* Use fewer global event listeners (via `@loopmode/events`)
+
 ### v0.4.2
 * Prevent default events when disabled
 
