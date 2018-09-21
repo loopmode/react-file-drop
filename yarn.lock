@@ -19,9 +19,9 @@
     reflect-metadata "^0.1.12"
     tslib "^1.8.1"
 
-"@loopmode/events@1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@loopmode/events/-/events-1.0.2.tgz#f34c4eda18aae9b3126f7f5417d2ab21e1715da2"
+"@loopmode/events@1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@loopmode/events/-/events-1.0.3.tgz#32540be49fdb56523ad02a70ba549a892f6c7d55"
   dependencies:
     detect-passive-events "^1.0.4"
 

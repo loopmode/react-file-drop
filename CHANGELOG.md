@@ -1,5 +1,10 @@
 # react-file-drop changelog
 
+### v0.4.4
+
+* Use es5 target for TS compiler again
+* Update @loopmode/events
+
 ### v0.4.3
 
 * Use fewer global event listeners (via `@loopmode/events`)

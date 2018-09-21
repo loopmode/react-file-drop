@@ -3,7 +3,7 @@
     "outDir": "../../dist/FileDrop",
     "baseUrl": "../../",
     "module": "es6",
-    "target": "es6",
+    "target": "es5",
     "moduleResolution": "node",
     "jsx": "react",
     "noImplicitAny": true,
