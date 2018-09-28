@@ -1,7 +1,10 @@
 var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    }
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -18,7 +21,7 @@ var FileDrop = /** @class */ (function (_super) {
         var _this = _super.call(this, props) || this;
         _this.resetDragging = function () {
             _this.frameDragCounter = 0;
-            _this.setState({ draggingOverFrame: false, draggingOverTarget: false });
+            _this._isMounted && _this.setState({ draggingOverFrame: false, draggingOverTarget: false });
         };
         _this.handleWindowDragOverOrDrop = function (event) {
             // This prevents the browser from trying to load whatever file the user dropped on the window
@@ -35,13 +38,13 @@ var FileDrop = /** @class */ (function (_super) {
             // This is far better than a "dragover" handler, which would be calling `setState` continuously.
             _this.frameDragCounter += event.type === "dragenter" ? 1 : -1;
             if (_this.frameDragCounter === 1) {
-                _this.setState({ draggingOverFrame: true });
+                _this._isMounted && _this.setState({ draggingOverFrame: true });
                 if (_this.props.onFrameDragEnter)
                     _this.props.onFrameDragEnter(event);
                 return;
             }
             if (_this.frameDragCounter === 0) {
-                _this.setState({ draggingOverFrame: false });
+                _this._isMounted && _this.setState({ draggingOverFrame: false });
                 if (_this.props.onFrameDragLeave)
                     _this.props.onFrameDragLeave(event);
                 return;
@@ -63,7 +66,7 @@ var FileDrop = /** @class */ (function (_super) {
                 event.preventDefault();
                 return;
             }
-            _this.setState({ draggingOverTarget: true });
+            _this._isMounted && _this.setState({ draggingOverTarget: true });
             if (!FileDrop.isIE())
                 event.dataTransfer.dropEffect = _this.props.dropEffect;
             if (_this.props.onDragOver)
@@ -74,7 +77,7 @@ var FileDrop = /** @class */ (function (_super) {
                 event.preventDefault();
                 return;
             }
-            _this.setState({ draggingOverTarget: false });
+            _this._isMounted && _this.setState({ draggingOverTarget: false });
             if (_this.props.onDragLeave)
                 _this.props.onDragLeave(event);
         };
@@ -126,12 +129,14 @@ var FileDrop = /** @class */ (function (_super) {
         }
     };
     FileDrop.prototype.componentDidMount = function () {
+        this._isMounted = true;
         this.startFrameListeners(this.props.frame);
         this.resetDragging();
         Events.addEventListener("dragover", this.handleWindowDragOverOrDrop);
         Events.addEventListener("drop", this.handleWindowDragOverOrDrop);
     };
     FileDrop.prototype.componentWillUnmount = function () {
+        this._isMounted = false;
         this.stopFrameListeners(this.props.frame);
         Events.removeEventListener("dragover", this.handleWindowDragOverOrDrop);
         Events.removeEventListener("drop", this.handleWindowDragOverOrDrop);

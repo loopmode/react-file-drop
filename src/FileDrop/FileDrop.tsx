@@ -84,6 +84,7 @@ class FileDrop extends React.PureComponent<IFileDropProps, IFileDropState> {
   };
 
   frameDragCounter: number;
+  _isMounted: boolean;
 
   constructor(props: IFileDropProps) {
     super(props);
@@ -115,7 +116,7 @@ class FileDrop extends React.PureComponent<IFileDropProps, IFileDropState> {
 
   resetDragging = () => {
     this.frameDragCounter = 0;
-    this.setState({ draggingOverFrame: false, draggingOverTarget: false });
+    this._isMounted && this.setState({ draggingOverFrame: false, draggingOverTarget: false });
   };
 
   handleWindowDragOverOrDrop = (event: DragEvent) => {
@@ -136,13 +137,13 @@ class FileDrop extends React.PureComponent<IFileDropProps, IFileDropState> {
     this.frameDragCounter += event.type === "dragenter" ? 1 : -1;
 
     if (this.frameDragCounter === 1) {
-      this.setState({ draggingOverFrame: true });
+      this._isMounted && this.setState({ draggingOverFrame: true });
       if (this.props.onFrameDragEnter) this.props.onFrameDragEnter(event);
       return;
     }
 
     if (this.frameDragCounter === 0) {
-      this.setState({ draggingOverFrame: false });
+      this._isMounted && this.setState({ draggingOverFrame: false });
       if (this.props.onFrameDragLeave) this.props.onFrameDragLeave(event);
       return;
     }
@@ -164,7 +165,7 @@ class FileDrop extends React.PureComponent<IFileDropProps, IFileDropState> {
       event.preventDefault();
       return;
     }
-    this.setState({ draggingOverTarget: true });
+    this._isMounted && this.setState({ draggingOverTarget: true });
     if (!FileDrop.isIE()) event.dataTransfer.dropEffect = this.props.dropEffect;
     if (this.props.onDragOver) this.props.onDragOver(event);
   };
@@ -174,7 +175,7 @@ class FileDrop extends React.PureComponent<IFileDropProps, IFileDropState> {
       event.preventDefault();
       return;
     }
-    this.setState({ draggingOverTarget: false });
+    this._isMounted && this.setState({ draggingOverTarget: false });
     if (this.props.onDragLeave) this.props.onDragLeave(event);
   };
 
@@ -224,6 +225,7 @@ class FileDrop extends React.PureComponent<IFileDropProps, IFileDropState> {
   }
 
   componentDidMount() {
+    this._isMounted = true;
     this.startFrameListeners(this.props.frame);
     this.resetDragging();
     Events.addEventListener("dragover", this.handleWindowDragOverOrDrop);
@@ -231,6 +233,7 @@ class FileDrop extends React.PureComponent<IFileDropProps, IFileDropState> {
   }
 
   componentWillUnmount() {
+    this._isMounted = false;
     this.stopFrameListeners(this.props.frame);
     Events.removeEventListener("dragover", this.handleWindowDragOverOrDrop);
     Events.removeEventListener("drop", this.handleWindowDragOverOrDrop);

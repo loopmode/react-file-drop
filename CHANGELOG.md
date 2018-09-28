@@ -1,5 +1,9 @@
 # react-file-drop changelog
 
+### v0.4.6
+
+-   Check whether component is still mounted before calling setState
+
 ### v0.4.5
 
 -   Update @loopmode/events 1.0.4
