@@ -3,6 +3,7 @@
 ### v0.4.6
 
 -   Check whether component is still mounted before calling setState
+-   Upgrade typescript, fixes weird compiler warnings
 
 ### v0.4.5
 

@@ -9,7 +9,8 @@
     "noImplicitAny": true,
     "allowSyntheticDefaultImports": true,
     "traceResolution": false,
-    "declaration": true
+    "declaration": true,
+    "lib": ["es6", "dom"]
   },
   "exclude": ["node_modules"]
 }

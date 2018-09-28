@@ -4,7 +4,7 @@
   "contributors": [
     "Jovica Aleksic <jovica.aleksic@loopmode.de>"
   ],
-  "version": "0.4.5",
+  "version": "0.4.6",
   "description": "React component for Gmail or Facbook -like drag and drop file uploader. Drag files anywhere onto the window to highlight a 'drop area' of the page",
   "main": "dist/FileDrop/FileDrop.js",
   "types": "dist/FileDrop/FileDrop.d.ts",
@@ -60,7 +60,7 @@
     "@types/react": "^16.0.25",
     "@types/react-dom": "^16.0.3",
     "@types/webpack": "^3.8.1",
-    "@types/webpack-dev-server": "^2.9.2",
+    "@types/webpack-dev-server": "^2.9.4",
     "chokidar": "^1.7.0",
     "chokidar-cli": "^1.2.0",
     "clean-webpack-plugin": "^0.1.19",
@@ -74,7 +74,7 @@
     "ts-loader": "^3.2.0",
     "tslint": "^5.8.0",
     "tslint-config-airbnb": "^5.4.2",
-    "typescript": "^2.6.2",
+    "typescript": "^3.1.1",
     "webpack": "^3.8.1",
     "webpack-dev-server": "^2.9.4"
   }
