@@ -142,6 +142,9 @@ var FileDrop = /** @class */ (function (_super) {
         Events.removeEventListener("drop", this.handleWindowDragOverOrDrop);
     };
     FileDrop.prototype.render = function () {
+        if (this.props.disabled) {
+            return this.props.children;
+        }
         var className = "file-drop";
         if (this.props.className)
             className += " " + this.props.className;

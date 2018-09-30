@@ -63,6 +63,6 @@ declare class FileDrop extends React.PureComponent<IFileDropProps, IFileDropStat
     componentWillReceiveProps(nextProps: IFileDropProps): void;
     componentDidMount(): void;
     componentWillUnmount(): void;
-    render(): JSX.Element;
+    render(): {};
 }
 export default FileDrop;

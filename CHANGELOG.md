@@ -1,5 +1,9 @@
 # react-file-drop changelog
 
+### v0.4.7
+
+-   Do not render with wrapper components when disabled
+
 ### v0.4.6
 
 -   Check whether component is still mounted before calling setState

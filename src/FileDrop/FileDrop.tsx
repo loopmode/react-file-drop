@@ -240,6 +240,9 @@ class FileDrop extends React.PureComponent<IFileDropProps, IFileDropState> {
   }
 
   render() {
+    if (this.props.disabled) {
+      return this.props.children;
+    }
     let className = "file-drop";
     if (this.props.className) className += " " + this.props.className;
     if (this.props.disabled) className += " disabled";
