@@ -4,7 +4,7 @@
   "contributors": [
     "Jovica Aleksic <jovica.aleksic@loopmode.de>"
   ],
-  "version": "0.4.7",
+  "version": "0.4.8",
   "description": "React component for Gmail or Facbook -like drag and drop file uploader. Drag files anywhere onto the window to highlight a 'drop area' of the page",
   "main": "dist/FileDrop/FileDrop.js",
   "types": "dist/FileDrop/FileDrop.d.ts",
@@ -14,7 +14,8 @@
     "build:demo": "cross-env NODE_ENV=production webpack -p",
     "lint": "tslint --project src",
     "lint:watch": "SHELL=/bin/bash chokidar webpack.config.* tslint.json tsconfig.json ./**/*.ts ./**/*.tsx -c \"npm run lint\" --initial --verbose",
-    "lint:fix": "tslint --project . --fix"
+    "lint:fix": "tslint --project . --fix",
+    "prepublishOnly": "yarn build:filedrop"
   },
   "keywords": [
     "react file gmail",
@@ -46,7 +47,7 @@
   },
   "homepage": "https://github.com/loopmode/react-file-drop#readme",
   "dependencies": {
-    "@loopmode/events": "1.0.4",
+    "@loopmode/events": "^1.0.5",
     "dnd-details": "^1.0.6",
     "prop-types": "^15.6.1"
   },

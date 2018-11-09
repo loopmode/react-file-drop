@@ -1,5 +1,9 @@
 # react-file-drop changelog
 
+### v0.4.8
+
+-   Upgrade @loopmode/events to allow SSR
+
 ### v0.4.7
 
 -   Do not render with wrapper components when disabled
